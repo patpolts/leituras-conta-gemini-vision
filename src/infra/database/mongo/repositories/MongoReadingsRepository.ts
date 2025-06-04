@@ -1,30 +1,28 @@
-import { IReadingsRepository } from '../IReadingsRepository';
-import { v4 as uuidv4 } from 'uuid'; 
+import { IReadingsRepository } from '@application/repositories/IReadingsRepository';
+import { v4 as uuidv4 } from 'uuid';
 import mongoose, { Document, Schema } from 'mongoose';
-import { connection } from "../../config/mongoDB";
-import { enviroments } from "../../config/enviroments";
-import { Reading } from '../../entities/Reading';
+import { connection } from "@config/mongoDB";
+import { enviroments } from "@config/enviroments";
+import { Reading } from '@application/entities/Reading';
 
-export const readingSchema:Schema = new mongoose.Schema({
-    uuid: {type: String},
-    code: {type: String},
-    image: {type: String},
-    reading: {type: Number},
-    readingDatetime: {type: Date},
-    readingType: {type: String},
-    readingConfirmed: {type: Boolean},
-},{strict: true, timestamps: true});
+export const readingSchema: Schema = new mongoose.Schema({
+    uuid: { type: String },
+    code: { type: String },
+    image: { type: String },
+    reading: { type: Number },
+    readingDatetime: { type: Date },
+    readingType: { type: String },
+    readingConfirmed: { type: Boolean },
+}, { strict: true, timestamps: true });
 
-export const readingModel = mongoose.model('reading',readingSchema);
+export const readingModel = mongoose.model('reading', readingSchema);
 
-export class MongoReadingsRepository implements IReadingsRepository{
-    public reading: Reading|any;
-    constructor(){ 
+export class MongoReadingsRepository implements IReadingsRepository {
+    public reading: Reading | any;
+    constructor() {
     }
-    
-   
 
-    async connection(){
+    async connection() {
         try {
             await connection;
             console.log('Conectado ao MongoDB com sucesso!');
@@ -34,24 +32,24 @@ export class MongoReadingsRepository implements IReadingsRepository{
         }
     }
 
-    async findByCode(filter: any): Promise<Reading|any> {
+    async findByCode(filter: any): Promise<Reading | any> {
         try {
-            this.connection(); 
-            
+            this.connection();
+
             const datetime = new Date(filter.datetime);
             const startOfMonth = new Date(datetime.getFullYear(), datetime.getMonth(), 1);
             const endOfMonth = new Date(datetime.getFullYear(), datetime.getMonth() + 1, 0, 23, 59, 59, 999);
-            
+
             const docs = await readingModel.find({
                 code: filter.code,
                 readingType: filter.measure,
                 readingDatetime: {
-                  $gte: startOfMonth,
-                  $lte: endOfMonth,
+                    $gte: startOfMonth,
+                    $lte: endOfMonth,
                 },
-              }).exec();
-            
-            if(docs.length > 0){
+            }).exec();
+
+            if (docs.length > 0) {
                 const readings = docs.map((doc) => {
                     this.reading = new Reading({
                         uuid: doc.uuid,
@@ -62,11 +60,11 @@ export class MongoReadingsRepository implements IReadingsRepository{
                         readingType: doc.readingType,
                         readingConfirmed: false
                     })
-                }); 
+                });
 
                 return this.reading;
 
-            }else{
+            } else {
                 return null;
 
             }
@@ -75,14 +73,14 @@ export class MongoReadingsRepository implements IReadingsRepository{
             throw error
         }
     }
- 
+
     async findByMeasure(measure: any): Promise<any> {
         try {
-            this.connection(); 
+            this.connection();
 
-            const docs = await readingModel.find({uuid: measure.uuid}).exec();
-            
-            if(docs.length > 0){
+            const docs = await readingModel.find({ uuid: measure.uuid }).exec();
+
+            if (docs.length > 0) {
                 const readings = docs.map((doc) => {
                     this.reading = new Reading({
                         uuid: doc.uuid,
@@ -93,11 +91,11 @@ export class MongoReadingsRepository implements IReadingsRepository{
                         readingType: doc.readingType,
                         readingConfirmed: doc.readingConfirmed
                     })
-                }); 
+                });
 
                 return this.reading;
 
-            }else{
+            } else {
                 return null;
 
             }
@@ -106,28 +104,30 @@ export class MongoReadingsRepository implements IReadingsRepository{
             throw error
         }
     }
+
     async list(filter: any): Promise<any> {
         try {
-            this.connection(); 
-            
+            this.connection();
+
             const docs = await readingModel.find(filter).exec();
-            
-            if(docs.length > 0){
+
+            if (docs.length > 0) {
                 return docs;
 
-            }else{
+            } else {
                 return null;
 
             }
 
         } catch (error) {
             throw error
-            
+
         }
     }
-    async save(reading: Reading): Promise<Reading|string>{
+    
+    async save(reading: Reading): Promise<Reading | string> {
         try {
-            this.connection(); 
+            this.connection();
 
             const uuid = uuidv4();
             const create = new readingModel({
@@ -140,7 +140,7 @@ export class MongoReadingsRepository implements IReadingsRepository{
                 readingConfirmed: false
             });
 
-            const doc = await create.save(); 
+            const doc = await create.save();
 
             this.reading = new Reading({
                 uuid: doc.uuid,
@@ -152,7 +152,7 @@ export class MongoReadingsRepository implements IReadingsRepository{
                 readingConfirmed: false
             });
 
-            return this.reading; 
+            return this.reading;
         } catch (error) {
             console.error(`Erro ao salvar dados no banco: ${error}`);
             throw error;
@@ -160,21 +160,21 @@ export class MongoReadingsRepository implements IReadingsRepository{
 
     }
 
-    async update(reading: any,id:string): Promise<any> {
+    async update(reading: any, id: string): Promise<any> {
         try {
-            this.connection(); 
-            
+            this.connection();
+
             const result = await readingModel.updateOne(
-                { uuid: id }, 
-                { $set: reading } 
+                { uuid: id },
+                { $set: reading }
             ).exec();
-    
+
             return result.modifiedCount > 0 ? true : false;
-            
+
         } catch (error) {
             console.error('Erro ao atualizar documento:', error);
             throw error;
         }
     }
-    
+
 }

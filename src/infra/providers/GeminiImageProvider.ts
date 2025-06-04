@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleAIFileManager } from "@google/generative-ai/server";
-import {IImageProvider} from '../IImageProvider'
-import { enviroments } from "../../../src/config/enviroments";
+import {IImageProvider} from '@application/providers/IImageProvider'
+import { enviroments } from "@config/enviroments";
 import fs from 'fs';
 import {delay} from 'bluebird'
 

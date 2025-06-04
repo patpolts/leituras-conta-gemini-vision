@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GetReadingsStrategy } from "./GetReadingsStrategy";
+import { GetReadingsCase } from "./GetReadingsCase";
 
 function isValidMeasureType(type: string): boolean {
     const validTypes = ['WATER', 'GAS'];
@@ -8,7 +8,7 @@ function isValidMeasureType(type: string): boolean {
 
 export class GetReadingsController{
     constructor(
-        private getReadingsStrategy: GetReadingsStrategy
+        private getReadingsCase: GetReadingsCase
     ){}
 
     async handle(req: Request, res: Response): Promise<any>{
@@ -24,7 +24,7 @@ export class GetReadingsController{
 
             }
 
-            const result = await this.getReadingsStrategy.execute({
+            const result = await this.getReadingsCase.execute({
                 customer_code,measure_type
             });
             

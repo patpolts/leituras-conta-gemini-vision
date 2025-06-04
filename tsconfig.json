@@ -1,10 +1,11 @@
 {
     "compilerOptions": {
-      "target": "es2017",
+      "target": "es2023",
       "module": "commonjs",
       "outDir": "./dist",
       "rootDir": "./src",
       "strict": true,
+      "strictNullChecks": true,
       "allowJs": true,
       "esModuleInterop": true, 
       "forceConsistentCasingInFileNames": true, 
@@ -12,12 +13,23 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "skipLibCheck": true,
+      "allowSyntheticDefaultImports": true,
+      "noImplicitAny": true,
+      "strictBindCallApply": false,
+      "strictPropertyInitialization": false,
+      "noFallthroughCasesInSwitch": false,
       "typeRoots": [
         "./node_modules/@types",
         "./src/@types"
       ],
       "resolveJsonModule": true,
-      "baseUrl": ".",
+      "baseUrl": "./",
+      "paths": {
+        "@application/*": ["./src/application/*"],
+        "@infra/*": ["./src/infra/*"],
+        "@helpers/*": ["./src/helpers/*"],
+        "@config/*": ["./src/config/*"],
+      }
     },
     "include": ["src/**/*"]
   }

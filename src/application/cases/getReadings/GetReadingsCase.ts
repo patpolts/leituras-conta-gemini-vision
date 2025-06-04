@@ -1,7 +1,7 @@
-import { IReadingsRepository } from "src/repositories/IReadingsRepository";
+import { IReadingsRepository } from "@application/repositories/IReadingsRepository";
 import { IGetReadingsDTO } from "./GetReadingsDTO";
 
-export class GetReadingsStrategy{
+export class GetReadingsCase{
     constructor(
         private uploadsRepository: IReadingsRepository
     ){}

@@ -1,4 +1,4 @@
-import { Reading } from "../entities/Reading";
+import { Reading } from "@application/entities/Reading";
 
 export interface IReadingsRepository{
     findByCode(filter:any): Promise<any>;

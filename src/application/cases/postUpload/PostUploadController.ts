@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PostUploadStrategy } from "./PostUploadStrategy";
+import { PostUploadCase } from "./PostUploadCase";
 
 function isValidString(value: any): boolean {
     return typeof value === 'string' && value.trim().length > 0;
@@ -30,7 +30,7 @@ function isValidBase64(image: string): boolean{
 
 export class PostUploadController{
     constructor(
-        private postUploadStrategy: PostUploadStrategy
+        private postUploadCase: PostUploadCase
     ){}
 
     async handle(req: Request, res: Response): Promise<any>{
@@ -65,7 +65,7 @@ export class PostUploadController{
                 });
             }
 
-            const result = await this.postUploadStrategy.execute({ 
+            const result = await this.postUploadCase.execute({ 
                 image,customer_code,measure_datetime,measure_type
             });
 

@@ -1,8 +1,8 @@
-import { IReadingsRepository } from "../../repositories/IReadingsRepository";
+import { IReadingsRepository } from "@application/repositories/IReadingsRepository";
 import { IPatchConfirmDTO } from "./PatchConfirmDTO";
 
 
-export class PatchConfirmStrategy{
+export class PatchConfirmCase{
     constructor(
         private uploadsRepository: IReadingsRepository,
     )

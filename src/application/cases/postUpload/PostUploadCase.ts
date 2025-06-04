@@ -1,12 +1,12 @@
 import fs from 'fs';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { IReadingsRepository } from '../../repositories/IReadingsRepository'
-import { IImageProvider } from '../../providers/IImageProvider';
+import { IReadingsRepository } from '@application/repositories/IReadingsRepository'
+import { IImageProvider } from '@application/providers/IImageProvider';
 import { GoogleAIFileManager } from "@google/generative-ai/server";
-import { enviroments } from '../../config/enviroments';
+import { enviroments } from '@config/enviroments';
 import {IPostUploadDTO} from './PostUploadDTO'
 
-export class PostUploadStrategy{
+export class PostUploadCase{
     constructor(
         private uploadsRepository: IReadingsRepository,
         private imageProvider: IImageProvider

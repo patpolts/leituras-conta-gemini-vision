@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PatchConfirmStrategy } from "./PatchConfirmStrategy";
+import { PatchConfirmCase } from "./PatchConfirmCase";
 
 
 function isValidString(value: any): boolean {
@@ -12,7 +12,7 @@ function isValidInteger(value: any): boolean {
   
 export class PatchConfirmController{
     constructor(
-        private patchConfirmStrategy: PatchConfirmStrategy
+        private patchConfirmCase: PatchConfirmCase
     ){}
 
     async handle(req: Request, res: Response): Promise<any>{
@@ -34,7 +34,7 @@ export class PatchConfirmController{
 
             }
 
-            const result = await this.patchConfirmStrategy.execute({
+            const result = await this.patchConfirmCase.execute({
                 measure_uuid,confirmed_value
             });
             
